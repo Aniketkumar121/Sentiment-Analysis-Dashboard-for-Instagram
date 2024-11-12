@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sentiment Analysis Results</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+
+        .chart, .info-box {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .info-box {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            margin-top: 40px;
+        }
+
+        .info-box i {
+            color: #ffc107; /* Bulb icon color */
+            margin-right: 10px;
+        }
+
+        .hashtags-box, .hashtag-table {
+            margin-bottom: 20px;
+        }
+
+        .hashtag {
+            background-color: #007bff;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            display: inline-flex;
+            align-items: center;
+            margin: 2px;
+            font-size: 14px;
+        }
+
+        table {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+        
+        h2, h4 {
+            text-align: center;
+            color: #007bff;
+        }
+
+        .hashtag-table {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Sentiment Analysis Results</h2>
+
+        <div id="pie_chart" class="chart"></div>
+        <div id="time_series" class="chart"></div>
+        <div id="bar_chart" class="chart"></div>
+        <div id="detailed_hover_plot" class="chart"></div>
+        <div id="interactions_chart" class="chart"></div>
+
+        <div class="info-box">
+            <i class="fas fa-lightbulb"></i> 
+            Observe and take inspiration from the elements that top posts have in common!
+        </div>
+
+        <div class="hashtags-box">
+            <h4>Hashtags Used:</h4>
+            {% for hashtag, count in sorted_hashtags %}
+                <span class="hashtag" style="font-size: {{ 12 + log(count) * 2 }}px;">
+                    {{ hashtag }}
+                </span>
+            {% endfor %}
+
+            <div class="info-box">
+                <i class="fas fa-lightbulb"></i>
+                <p>The size of the hashtag words is directly proportional to the average interactions received by the posts where they've been used.</p>
+            </div>
+        </div>
+
+        <div class="hashtag-table">
+            <h4>Hashtag Frequencies:</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Hashtag</th>
+                        <th>Frequency</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for hashtag, count in sorted_hashtags %}
+                        <tr>
+                            <td>{{ hashtag }}</td>
+                            <td>{{ count }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="info-box">
+                <i class="fas fa-lightbulb"></i>
+                <p>Use the hashtag feature to create stats, find the best hashtags for your profile, and discover if you have used penalizing hashtags.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var graphs = {{ graphs_data | safe }};
+        
+        console.log(graphs);  // Debugging: Check the data in the console
+
+        // Plot the various charts using Plotly
+        if (graphs.pie_chart && graphs.pie_chart.data.length) {
+            Plotly.newPlot('pie_chart', graphs.pie_chart.data, graphs.pie_chart.layout);
+        }
+        
+        if (graphs.time_series && graphs.time_series.data.length) {
+            Plotly.newPlot('time_series', graphs.time_series.data, graphs.time_series.layout);
+        }
+        
+        if (graphs.bar_chart && graphs.bar_chart.data.length) {
+            Plotly.newPlot('bar_chart', graphs.bar_chart.data, graphs.bar_chart.layout);
+        }
+        
+        if (graphs.detailed_hover_plot && graphs.detailed_hover_plot.data.length) {
+            Plotly.newPlot('detailed_hover_plot', graphs.detailed_hover_plot.data, graphs.detailed_hover_plot.layout);
+        }
+        
+        if (graphs.interactions_chart && graphs.interactions_chart.data.length) {
+            Plotly.newPlot('interactions_chart', graphs.interactions_chart.data, graphs.interactions_chart.layout);
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+</body>
+</html>
