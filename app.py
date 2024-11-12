@@ -201,4 +201,4 @@ def analyze():
     return render_template('results.html', graphs_data=graphs_json, sorted_hashtags=sorted_hashtags)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run()
