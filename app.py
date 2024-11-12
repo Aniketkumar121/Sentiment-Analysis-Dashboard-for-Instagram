@@ -206,4 +206,5 @@ def analyze():
     return render_template('results.html', graphs_data=graphs_json, sorted_hashtags=sorted_hashtags)
 
 if __name__ == '__main__':
-    app.run()
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
