@@ -9,10 +9,10 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 import re
 from collections import Counter
 from math import log
-# import nltk
+import nltk
 
 # # Ensure that the VADER lexicon is downloaded
-# nltk.download('vader_lexicon')
+nltk.download('vader_lexicon')
 
 
 app = Flask(__name__)
